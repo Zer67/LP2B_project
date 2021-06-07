@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PipeObstacle_Script : MonoBehaviour
 {
-    const float pipeSpeed = 4f;
+    public float pipeSpeed = 4f;
     const float despawn_posX = -12f;
 
     public Player_script pscript;
+
+    public bool isStop = false;
+    
 
     public Sprite[] textures;
 
@@ -27,19 +30,25 @@ public class PipeObstacle_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate( -pipeSpeed * Time.deltaTime , 0, 0 );
-        if (transform.position.x < despawn_posX)
-        {
-            Destroy(gameObject);
-        }
-    }
+        if(!isStop){
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        Destroy(other.gameObject);
+            transform.Translate( -pipeSpeed * Time.deltaTime , 0, 0 );
+            if (transform.position.x < despawn_posX)
+            {
+                gameObject.transform.parent.GetComponent<Pipe_generator>().pipes.Remove(gameObject);
+                Destroy(gameObject);
+            }
+        }
+        
     }
 
     private void OnTriggerExit2D(Collider2D other) {
         pscript.updateScore();
     }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        gameObject.transform.parent.gameObject.GetComponent<Pipe_generator>().playDeathSound();
+    }
+
 
 }
