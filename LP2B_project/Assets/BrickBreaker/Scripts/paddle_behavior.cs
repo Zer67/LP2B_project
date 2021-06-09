@@ -8,8 +8,9 @@ public class paddle_behavior : MonoBehaviour
 
     private int score=0;
     public float speed;
-    private float limit = 4.9f;
+    private float limit = 4.85f;
 
+    public float ball_speed;
 
     public TextMeshPro score_displayer;
 
@@ -46,8 +47,9 @@ public class paddle_behavior : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.name == "Ball"){
             float diffX = other.transform.position.x - transform.position.x;
-            other.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(3*diffX,0);
-            other.gameObject.GetComponent<Rigidbody2D>().velocity.Normalize();
+            Vector2 dir = new Vector2(diffX,1).normalized;
+            other.gameObject.GetComponent<Rigidbody2D>().velocity = dir * ball_speed;
         }
+        
     }
 }
