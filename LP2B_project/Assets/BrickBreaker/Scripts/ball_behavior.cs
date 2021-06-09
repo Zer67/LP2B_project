@@ -42,8 +42,12 @@ public class ball_behavior : MonoBehaviour
     void Update()
     {   
         //Preventing ball from being horizontally stuck
-        if(body.velocity.y == 0 && body.velocity.x != 0 & transform.position.y > 0)
-            body.velocity += new Vector2(0,1f);
+        if(body.velocity.y >= -1 && body.velocity.y <= 1 &&  body.velocity.x != 0 & transform.position.y > 0)
+        {
+           // body.velocity += new Vector2(0,0.1f);
+            Vector2 tmp = body.velocity + new Vector2(0,-0.1f);
+            body.velocity = tmp.normalized * ball_speed;
+        }
         
         /* Ball goes outside of the screen */
         if(this.transform.position.y <= SCREEN_BOTTOM)
