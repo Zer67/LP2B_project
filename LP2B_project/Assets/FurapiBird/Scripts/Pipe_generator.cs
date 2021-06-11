@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Pipe_generator : MonoBehaviour
 {
@@ -75,6 +76,9 @@ public class Pipe_generator : MonoBehaviour
             }
 
         }
+        // Return to menu if the player press the escape button
+        if(Input.GetKey(KeyCode.Escape))
+            StartCoroutine(returnToMenu());
         
 
     }
@@ -96,5 +100,20 @@ public class Pipe_generator : MonoBehaviour
         source_music.clip = clips[1];
         source_music.loop = false;
         source_music.Play();
+        // Return to menu if the player died
+        StartCoroutine(returnToMenu());
+    }
+
+    IEnumerator returnToMenu(){
+        while(source_music.isPlaying && isDead){
+            yield return null;
+        }
+
+        AsyncOperation asyncload = SceneManager.LoadSceneAsync("Menu");
+
+        while(!asyncload.isDone){
+            yield return null;
+        }
+        
     }
 }

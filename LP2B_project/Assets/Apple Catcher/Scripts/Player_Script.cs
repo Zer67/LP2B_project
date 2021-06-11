@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Player_Script : MonoBehaviour
 {
@@ -60,11 +61,9 @@ public class Player_Script : MonoBehaviour
             Time.timeScale = 1.0f;
         }
 
-        //Quit game
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+        // Return to menu if the player press the escape button
+        if(Input.GetKey(KeyCode.Escape))
+            StartCoroutine(returnToMenu());
     }
 
     //React to a collision (collision start)
@@ -74,6 +73,16 @@ public class Player_Script : MonoBehaviour
         displayed_text.SetText("Score : " + score);
 
         ref_audioSource.Play();
+    }
+
+    IEnumerator returnToMenu(){
+
+        AsyncOperation asyncload = SceneManager.LoadSceneAsync("Menu");
+
+        while(!asyncload.isDone){
+            yield return null;
+        }
+        
     }
 
 }

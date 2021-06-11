@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class menu_script : MonoBehaviour
 {
 
-    protected const float TRANSITION_DURATION = 2f;
+    protected const float TRANSITION_DURATION = 1.8f;
 
     protected float timer = 0f;
 
@@ -20,7 +20,11 @@ public class menu_script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //Quit application
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     IEnumerator LoadScene(string scene_name){
@@ -30,7 +34,6 @@ public class menu_script : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-        
         AsyncOperation asyncload = SceneManager.LoadSceneAsync(scene_name);
 
         while(!asyncload.isDone){

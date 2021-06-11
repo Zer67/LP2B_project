@@ -8,4 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 731d08eb59e091e47b0b96eae7b2c525
+  - enabled: 1
+    path: Assets/Scenes/FurapiBird.unity
+    guid: 3dd5cd490fd11864abbb186c215e6d74
+  - enabled: 1
+    path: Assets/Scenes/BrickBreaker.unity
+    guid: d1534d2b7779ef244abe0bd795bfc20f
+  - enabled: 1
+    path: Assets/Scenes/AppleCatcher.unity
+    guid: 3a67b871010f8284993a21cacb06907e
   m_configObjects: {}

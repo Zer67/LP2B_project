@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class paddle_behavior : MonoBehaviour
 {
@@ -28,6 +29,10 @@ public class paddle_behavior : MonoBehaviour
         } else if(Input.GetKey(KeyCode.LeftArrow) && transform.position.x > -limit){
             transform.Translate(-speed*Time.deltaTime,0,0);
         }
+        // Return to menu if the player press the escape button
+        if(Input.GetKey(KeyCode.Escape))
+            StartCoroutine(returnToMenu());
+        
     }
 
     public void updateScore(int update){
@@ -49,6 +54,16 @@ public class paddle_behavior : MonoBehaviour
             float diffX = other.transform.position.x - transform.position.x;
             Vector2 dir = new Vector2(diffX,1).normalized;
             other.gameObject.GetComponent<Rigidbody2D>().velocity = dir * ball_speed;
+        }
+        
+    }
+
+    IEnumerator returnToMenu(){
+
+        AsyncOperation asyncload = SceneManager.LoadSceneAsync("Menu");
+
+        while(!asyncload.isDone){
+            yield return null;
         }
         
     }
