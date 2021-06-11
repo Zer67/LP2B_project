@@ -23,6 +23,7 @@ public class Player_Script : MonoBehaviour
     void Start()
     {
         ref_audioSource = GetComponent<AudioSource>();
+        ref_audioSource.volume = 0.3f;
         ref_animator = GetComponent<Animator>();
     }
 
