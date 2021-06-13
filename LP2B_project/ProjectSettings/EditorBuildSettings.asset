@@ -5,9 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 731d08eb59e091e47b0b96eae7b2c525
@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AppleCatcher.unity
     guid: 3a67b871010f8284993a21cacb06907e
+  - enabled: 1
+    path: Assets/Scenes/BBMenu.unity
+    guid: 062d35fa480c1ab488fafa2bb04eff80
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 94614199abfe62844933f87af6987fa4
   m_configObjects: {}

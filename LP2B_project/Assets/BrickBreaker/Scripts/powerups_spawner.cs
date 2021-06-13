@@ -7,6 +7,8 @@ public class powerups_spawner : MonoBehaviour
     private GameObject ref_prefab_powerup;
     private brickCreation_script bricks_script;
 
+    private bool sticky = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +27,7 @@ public class powerups_spawner : MonoBehaviour
         GameObject newDogeCoin = Instantiate(ref_prefab_powerup);
         newDogeCoin.name = ref_prefab_powerup.name;
         newDogeCoin.transform.position = new Vector3(x,y,-2);
-        bricks_script.playDoge();
+        if(newDogeCoin.gameObject.name.Contains("doge_coin"))  bricks_script.playDoge();
     }
 
     public void getRandomPower()
@@ -55,5 +57,9 @@ public class powerups_spawner : MonoBehaviour
         }
 
     }
+
+    public bool isBallSticky(){return this.sticky;}
+
+    public void setSticky(bool s){this.sticky = s;}
 
 }

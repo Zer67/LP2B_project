@@ -13,9 +13,13 @@ public class brick_behavior : MonoBehaviour
     private powerups_spawner powerup;
 
     private brickCreation_script brick_spawner;
+
+    private paddle_behavior paddle;
+
     // Start is called before the first frame update
     void Start()
     {
+        paddle = FindObjectOfType<paddle_behavior>();
         powerup = FindObjectOfType<powerups_spawner>();
         brick_spawner = FindObjectOfType<brickCreation_script>();
         balls = FindObjectOfType<ball_spawner>();
@@ -36,16 +40,10 @@ public class brick_behavior : MonoBehaviour
             if(lives == 0) Destroy(gameObject);
             if(!indestructible && lives == 0)
             {
-                if(brick_spawner.reportBrickDeath())
-                {
-
-                   ball_behavior ball = FindObjectOfType<ball_behavior>();
-                    ball.transform.position = new Vector3(0,-6.0f,0);
-                }  
-
+                brick_spawner.reportBrickDeath();
             }
              float random = Random.Range(0,1.0f);
-             if(random < 0.3f && lives == 0 && balls.getBallNumber() == 1) {
+             if(random < 0.3f && lives == 0 && balls.getBallNumber() == 1 && brick_spawner.getBricks() != 0) {
                 powerup.summon(transform.position.x,transform.position.y);
             }    
         }
@@ -60,14 +58,7 @@ public class brick_behavior : MonoBehaviour
             if(lives == 0) Destroy(gameObject);
             if(!indestructible && lives == 0)
             {
-                if(brick_spawner.reportBrickDeath())
-                {
-
-                    ball_behavior ball = FindObjectOfType<ball_behavior>();
-                    ball.resetSounds();
-                    ball.resetSpeed();
-                    ball.transform.position = new Vector3(0,-6.0f,0);
-                }  
+                brick_spawner.reportBrickDeath();
             }
         }
     }
