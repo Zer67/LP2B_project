@@ -16,12 +16,24 @@ public class brickCreation_script : MonoBehaviour
     private int brickCreated = 0;
     public float cap;
 
+    private bool endOfGame = false;
+
+    private Color32 [] colors={
+        new Color32((byte)255, (byte)100, (byte)100, (byte)255), //Red
+        new Color32((byte)100, (byte)255, (byte)100, (byte)255), //Green
+        new Color32((byte)100, (byte)100, (byte)255, (byte)255), //Blue
+        new Color32((byte)0, (byte)204, (byte)255, (byte)255), //Cyan
+        new Color32((byte)255, (byte)255, (byte)255, (byte)255), //White
+        new Color32((byte)255, (byte)133, (byte)51, (byte)255), //Orange
+        new Color32((byte)255, (byte)255, (byte)51, (byte)255), //Yellow
+        new Color32((byte)192, (byte)192, (byte)192, (byte)255), //Silver
+        new Color32((byte)255, (byte)200, (byte)0, (byte)255) //Gold
+    };
     // Start is called before the first frame update
     void Start()
     {
         player = gameObject.AddComponent<AudioSource>();
         player.clip = jingle[0];
-        //gameOverPlayer.volume = 0.01f;
         player.volume = 0.1f;
         generateRandomGrid();
     }
@@ -44,15 +56,26 @@ public class brickCreation_script : MonoBehaviour
                     newBrick.transform.parent = gameObject.transform;
                     newBrick.transform.position = new Vector3(x, y, 0);
                     newBrick.GetComponent<Renderer>().material.color = generateRandomColor();
+                    var tmp_brick = newBrick.GetComponent<brick_behavior>();
+                    if(tmp_brick.GetComponent<Renderer>().material.color == new Color32((byte)192, (byte)192, (byte)192, (byte)255))
+                        tmp_brick.setLives(2);
+                    if(tmp_brick.GetComponent<Renderer>().material.color == new Color32((byte)255, (byte)200, (byte)0, (byte)255))
+                        tmp_brick.setIndestructible(true);
                     if(x < -0.5){
                         GameObject newBrick_sym = Instantiate(ref_brick_prefab);
+                        newBrick_sym.GetComponent<Renderer>().material.color = newBrick.GetComponent<Renderer>().material.color;
                         newBrick_sym.transform.parent = gameObject.transform;
                         newBrick_sym.transform.position = new Vector3(-x,y,0);
-                        newBrick_sym.GetComponent<Renderer>().material.color = generateRandomColor();
+                        var tmp_sym_brick = newBrick_sym.GetComponent<brick_behavior>();
+                        
+                        if(tmp_sym_brick.GetComponent<Renderer>().material.color == new Color32((byte)192, (byte)192, (byte)192, (byte)255))
+                            tmp_sym_brick.setLives(2);
+                        if(tmp_sym_brick.GetComponent<Renderer>().material.color == new Color32((byte)255, (byte)200, (byte)0, (byte)255))
+                            tmp_sym_brick.setIndestructible(true);
 
-                        brickCreated+=2;
+                        if(!tmp_brick.isIndestructible()) brickCreated+=2;
                     } else {
-                        brickCreated++;
+                        if(!tmp_brick.isIndestructible()) brickCreated++;
                     }
                     
                 }
@@ -60,7 +83,7 @@ public class brickCreation_script : MonoBehaviour
             }
             x= -6 + 6f/13f;
             y-= y_step;
-        }        
+        }   
     }
 
     public bool reportBrickDeath(){
@@ -87,6 +110,9 @@ public class brickCreation_script : MonoBehaviour
     }
 
     private Color generateRandomColor(){
-        return new Color32((byte)Random.Range(100,255), (byte)Random.Range(100,255), (byte)Random.Range(100,255), 255);
+        int index = Random.Range(0,9);
+        return colors[index];
     }
+
+    public bool isEndOfGame(){return this.endOfGame;}
 }
