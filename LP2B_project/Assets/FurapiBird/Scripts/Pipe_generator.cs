@@ -77,8 +77,11 @@ public class Pipe_generator : MonoBehaviour
 
         }
         // Return to menu if the player press the escape button
-        if(Input.GetKey(KeyCode.Escape))
+        if(Input.GetKey(KeyCode.Escape)){
+            Time.timeScale = 1f;
             StartCoroutine(returnToMenu());
+        }
+            
         
 
     }

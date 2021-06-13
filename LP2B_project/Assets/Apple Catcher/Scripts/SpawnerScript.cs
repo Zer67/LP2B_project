@@ -20,7 +20,7 @@ public class SpawnerScript : MonoBehaviour
 
         ref_audioSource = gameObject.AddComponent<AudioSource>();
         ref_audioSource.loop = true;
-        ref_audioSource.volume = 0.5f;
+        ref_audioSource.volume = 0.2f;
         ref_audioSource.clip = ref_audioClip;
 
         StartCoroutine( FadeOutFromWhite() );

@@ -51,6 +51,7 @@ public class ball_behavior : MonoBehaviour
         //Preventing ball from being horizontally stuck
         if(body.velocity.y >= -1 && body.velocity.y <= 1 &&  body.velocity.x != 0 & transform.position.y > 0)
         {
+
             Vector2 tmp = body.velocity + new Vector2(0,-1.0f);
             body.velocity = tmp.normalized * y_ball_speed;
         }
