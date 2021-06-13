@@ -10,6 +10,10 @@ public class Pipe_generator : MonoBehaviour
     public background_script bg;
     private float timer = 0;
 
+    private float timer_coroutine = 0;
+
+    private const float max_volume_music = 0.15f;
+
     private float timerSpeed = 0;
     private AudioSource source_music;
 
@@ -31,9 +35,8 @@ public class Pipe_generator : MonoBehaviour
         /* Let's put some music */
         source_music = gameObject.AddComponent<AudioSource>();
         source_music.clip = clips[0];
-        source_music.volume = 0.15f;
+        source_music.volume = 0f;
         source_music.loop = true;
-        source_music.Play();
 
         /* And then some sounds */
         source_sound = gameObject.AddComponent<AudioSource>();
@@ -118,5 +121,18 @@ public class Pipe_generator : MonoBehaviour
             yield return null;
         }
         
+    }
+
+    public void PlayMusic(){
+        StartCoroutine(PlayMusicCor());
+    }
+
+    IEnumerator PlayMusicCor(){
+        source_music.Play();
+        while(source_music.volume < max_volume_music){
+            source_music.volume += Time.unscaledDeltaTime*0.1f;
+            yield return null;
+        }
+        yield return null;     
     }
 }

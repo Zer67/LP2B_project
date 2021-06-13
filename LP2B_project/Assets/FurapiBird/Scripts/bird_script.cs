@@ -1,11 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class bird_script : MonoBehaviour
 {
+
+    public Pipe_generator ref_script_pipe;
     private GameObject parent;
     private Animator ref_animator;
+
+    public TextMeshPro countdown;
+
+    private const float delay_fadeout = 4f;
+
+    private AudioSource bird_source;
+    private const float max_volume = 0.3f;
+
+    public AudioClip bird_sound;
+
+    public SpriteRenderer fader;
 
 
     protected const float start_timer = 2f;
@@ -20,10 +34,16 @@ public class bird_script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bird_source = gameObject.AddComponent<AudioSource>();
+        bird_source.clip = bird_sound;
+        bird_source.volume = 0f;
+
+
+
         parent = gameObject.transform.parent.gameObject;
         ref_animator = gameObject.GetComponent<Animator>();
         gameObject.GetComponent<Rigidbody2D>().freezeRotation = true;
-        StartCoroutine(StartGame());
+        StartCoroutine(fadeOut());
     }
 
     // Update is called once per frame
@@ -58,13 +78,42 @@ public class bird_script : MonoBehaviour
         control_enabled = false;
     }
 
-    IEnumerator StartGame(){
-        timer = 0;
+    IEnumerator fadeOut(){
+        bird_source.Play();
         Time.timeScale = 0;
-        while(timer < start_timer){
-            timer+= Time.unscaledDeltaTime;
+        float alpha = 1f;
+        while(timer < delay_fadeout){
+            timer+=Time.unscaledDeltaTime;
+            bird_source.volume += max_volume*Time.unscaledDeltaTime/delay_fadeout;
+            alpha -= Time.unscaledDeltaTime/delay_fadeout;
+            fader.color = new Color(255,255,255,alpha);
             yield return null;
         }
+        bird_source.Stop();
+        Destroy(bird_source);
+        ref_script_pipe.PlayMusic();
+        StartCoroutine(StartGame());
+        yield return null;
+    }
+
+    IEnumerator StartGame(){
+        timer = 0;
+        int count = 3;
+        countdown.SetText(count.ToString());
+
+        
+        while(timer < start_timer){
+            timer+= Time.unscaledDeltaTime;
+            if(timer >= start_timer/3 && count ==3 ){
+                count--;
+                countdown.SetText(count.ToString());
+            } else if(timer >= start_timer*2/3 && count ==2 ){
+                count--;
+                countdown.SetText(count.ToString());
+            }
+            yield return null;
+        }
+        Destroy(countdown);
         control_enabled = true;
         Time.timeScale = 1f;
         yield return null;
