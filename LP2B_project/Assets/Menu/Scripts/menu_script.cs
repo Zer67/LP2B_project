@@ -66,7 +66,7 @@ public class menu_script : MonoBehaviour
     }
 
     public void setBBscene(){
-        StartCoroutine(LoadScene("BrickBreaker"));
+        StartCoroutine(LoadScene("BBMenu"));
     }
 
 }

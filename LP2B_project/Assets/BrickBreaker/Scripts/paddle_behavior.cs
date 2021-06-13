@@ -24,9 +24,14 @@ public class paddle_behavior : MonoBehaviour
 
     protected AudioSource sound_source;
     public AudioClip[] sounds;
+
+    private powerups_spawner powerup;
+
+    
     // Start is called before the first frame update
     void Start()
     {
+        powerup = FindObjectOfType<powerups_spawner>();
         sound_source = gameObject.AddComponent<AudioSource>();
         sound_source.volume = 0.1f;
         sound_source.loop = false;
@@ -77,7 +82,7 @@ public class paddle_behavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.name.Contains("Ball")){
-            if(!other.gameObject.GetComponent<ball_behavior>().isSticky())
+            if(!powerup.isBallSticky())
             {
                 float diffX = other.transform.position.x - transform.position.x;
                 Vector2 dir = new Vector2(diffX,1).normalized;
@@ -96,6 +101,7 @@ public class paddle_behavior : MonoBehaviour
         }
         
     }
+
     public void setBallSpeed(float s){this.ball_speed = s;}
 
     public void setPaddleSpeed(int s){this.speed = s;}
@@ -108,4 +114,6 @@ public class paddle_behavior : MonoBehaviour
     }
 
     public void canFireBullets(bool b){this.fireBullets = b;}
+
+    
 }

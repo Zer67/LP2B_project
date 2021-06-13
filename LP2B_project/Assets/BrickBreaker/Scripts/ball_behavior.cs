@@ -15,25 +15,29 @@ public class ball_behavior : MonoBehaviour
 
     /* Variables */
     public float y_ball_speed;
-   
-    private Rigidbody2D body;
 
-    private bool deathPlaying = false;
     private bool introPlaying = true;
 
-    private bool sticky = false;
+    private bool deathPlaying = false;
+   
+    private Rigidbody2D body;
 
     private ball_spawner spawner_script;
 
     private powerups_spawner powers_spawner;
 
+    private game_manager game;
+
     /* Constants */
      private const float DEATH_COUNT_DOWN = 2.0f;
     private const float INTRO_COUNT_DOWN = 3.0f;
     private const float SCREEN_BOTTOM = -5.3f;
+
+    private readonly Vector3 ORIGINAL_POS = new Vector3(0.36f,-4.30f,0);
     // Start is called before the first frame update
     void Start()
     {
+        game = FindObjectOfType<game_manager>();
         powers_spawner = FindObjectOfType<powerups_spawner>();
         spawner_script = FindObjectOfType<ball_spawner>();
         paddle_script = FindObjectOfType<paddle_behavior>();
@@ -42,16 +46,35 @@ public class ball_behavior : MonoBehaviour
         sound_source.volume = 0.1f;
         sound_source.loop = false;
         sound_source.playOnAwake = false;
-        body = GetComponent<Rigidbody2D>();   
+        body = GetComponent<Rigidbody2D>();
+
+        if(spawner_script.getBallNumber() == 1)
+        {   
+            resetPosition();
+        }
+        else introPlaying = false;
     }
 
     // Update is called once per frame
     void Update()
     {   
+        if(introPlaying && game.isGameStarting() &&  spawner_script.getBallNumber() == 1)
+        {   
+           game.setGameStarting(false);
+            StartCoroutine(waitIntro(INTRO_COUNT_DOWN));
+        }
+
+        if(game.isEndOfGame())
+        {
+            resetAll();
+             resetPosition();
+            game.setEndOfGame(false);
+            introPlaying = true;
+        }
+
         //Preventing ball from being horizontally stuck
         if(body.velocity.y >= -1 && body.velocity.y <= 1 &&  body.velocity.x != 0 & transform.position.y > 0)
         {
-
             Vector2 tmp = body.velocity + new Vector2(0,-1.0f);
             body.velocity = tmp.normalized * y_ball_speed;
         }
@@ -59,39 +82,32 @@ public class ball_behavior : MonoBehaviour
         /* Ball goes outside of the screen */
         if( this.transform.position.y <= SCREEN_BOTTOM)
         {   
-
             if(spawner_script.getBallNumber() > 1 ) 
             {
                 spawner_script.decreaseBallNumber();
                 spawner_script.removeBall(this);
-                Destroy(this.gameObject);
             }
             else
             {
-                if(deathPlaying)
-                {
-                    deathPlaying = false;
-                    StartCoroutine(waitDeath(DEATH_COUNT_DOWN));
-                }
-                
-                if(introPlaying)
-                {
-                    resetAll();
-                    resetPosition();
-                    StartCoroutine(waitIntro(INTRO_COUNT_DOWN));    
-                }
+                resetAll();
+                resetPosition(); 
+                StartCoroutine(waitDeath(DEATH_COUNT_DOWN));      
+     
             }
         }
+            
 
-            if( !introPlaying && body.velocity.x == 0 && body.velocity.y == 0 && Input.GetKeyDown(KeyCode.Space))
+            if( !introPlaying && !deathPlaying && body.velocity.x == 0 && body.velocity.y == 0 && Input.GetKeyDown(KeyCode.Space))
             {
-                
-                if(sticky) StartCoroutine(launchBall());
+                if(powers_spawner.isBallSticky()) 
+                {
+
+                    StartCoroutine(launchBall());
+                }
                 else
                 {
                     GetComponent<Rigidbody2D>().isKinematic = false;
                     transform.parent = null;
-                    sticky = false;
                     body.velocity = (new Vector2(0,-y_ball_speed)).normalized * y_ball_speed;
                 }
             }
@@ -102,7 +118,7 @@ public class ball_behavior : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.name == "Paddle")
         {
-            if(sticky)
+            if(powers_spawner.isBallSticky())
             {
                  GetComponent<Rigidbody2D>().isKinematic = true;
                 body.velocity = Vector3.zero;
@@ -117,7 +133,8 @@ public class ball_behavior : MonoBehaviour
         {
             sound_source.clip = sounds[1];
             sound_source.Play();
-            paddle_script.updateScore(50);
+            if(!other.gameObject.GetComponent<brick_behavior>().isIndestructible())
+                paddle_script.updateScore(50);
         }
  
         
@@ -135,10 +152,11 @@ public class ball_behavior : MonoBehaviour
 
     IEnumerator waitDeath(float duration)
     {
+        deathPlaying = true;
         this.sound_source.clip = this.sounds[4];
          this.sound_source.Play();
         yield return new WaitForSeconds(duration);
-        introPlaying = true;
+        deathPlaying = false;
     }
     
 
@@ -147,8 +165,6 @@ public class ball_behavior : MonoBehaviour
         this.sound_source.clip = this.sounds[2];
         this.sound_source.Play();
          yield return new WaitForSeconds(duration);  
-         paddle_script.setPaddleSpeed(11);
-         deathPlaying = true;
          introPlaying = false;
     }
 
@@ -156,43 +172,26 @@ public class ball_behavior : MonoBehaviour
     {
         GetComponent<Rigidbody2D>().isKinematic = false;
         transform.parent = null;
-        sticky = false;
+        powers_spawner.setSticky(false);
         body.velocity = (new Vector2(0,-y_ball_speed)).normalized * y_ball_speed;
         yield return new WaitForSeconds(0.1f); 
-        sticky = true;
+        powers_spawner.setSticky(true);
     }
    
-
-    public bool isSticky(){ return sticky;}
-
-    public void setSticky(bool s){this.sticky = s;}
-
     public float getBallSpeed(){return this.y_ball_speed;}
 
     public void resetAll()
     {
-        this.spawner_script.reset();
-        this.paddle_script.reset();
-        
-        
-        if(sticky)
+        if(powers_spawner.isBallSticky())
         { 
             this.GetComponent<Rigidbody2D>().isKinematic = false;
             this.transform.parent = null;
-            sticky = false;
+            powers_spawner.setSticky(false);
             if(body.velocity.y == 0) body.velocity = (new Vector2(0,-y_ball_speed)).normalized * y_ball_speed;
         }
-    }
 
-    public void resetSounds()
-    {
-        deathPlaying = false;
-        introPlaying = true;
-    }
-
-    public void resetSpeed()
-    {
-        body.velocity = Vector2.zero;
+        this.spawner_script.reset();
+        this.paddle_script.reset();    
     }
 
 }

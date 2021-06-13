@@ -9,9 +9,13 @@ public class powerups_behavior : MonoBehaviour
     private paddle_behavior paddle;
 
     private ball_spawner spawner_script;
+
+    private powerups_spawner powerup;
+
     // Start is called before the first frame update
     void Start()
     {
+        powerup = FindObjectOfType<powerups_spawner>();
         spawner_script = FindObjectOfType<ball_spawner>();
         paddle = FindObjectOfType<paddle_behavior>();
         GetComponent<Rigidbody2D>().velocity = new Vector2(0,-5f);
@@ -39,13 +43,13 @@ public class powerups_behavior : MonoBehaviour
                 switch(gameObject.name)
                 {
                     case "Catch":
-                        ball.setSticky(true);
+                        powerup.setSticky(true);
                     break;
                     case "Disruption":
                         spawner_script.spawnBalls(ball.transform.position,2);
                     break;
                     case "Enlarge":
-                        other.gameObject.transform.localScale += new Vector3(0.2f,-0.3f,0);
+                        other.gameObject.transform.localScale += new Vector3(0.2f,-0.2f,0);
                     break;
                     case "Laser":
                         other.gameObject.GetComponent<paddle_behavior>().canFireBullets(true);

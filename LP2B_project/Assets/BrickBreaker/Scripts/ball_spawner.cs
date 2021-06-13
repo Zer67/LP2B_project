@@ -5,13 +5,15 @@ using UnityEngine;
 public class ball_spawner : MonoBehaviour
 {
     private ball_behavior ball_prefab;
-    private ArrayList balls = new ArrayList();
-    private int ball_number = 0;
+
+    private List<ball_behavior> balls = new List<ball_behavior>(3);
+    private int ball_number = 1;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         ball_prefab = Resources.Load<ball_behavior>("Prefabs/Ball");
-        spawnBalls(new Vector3(0,-5.5f,0),1);
     }
 
     // Update is called once per frame
@@ -42,32 +44,37 @@ public class ball_spawner : MonoBehaviour
 
     public int getBallNumber(){return this.ball_number;}
 
-    public void reset()
+    public void removeBall(ball_behavior b)
     {
-        if(balls.Count > 1)
+        int index = balls.IndexOf(b);
+        balls.Remove(b);
+        Destroy(b.gameObject);
+
+        if(index == 0)
         {
-            for(int i = 1;i<ball_number;++i)
+            foreach(ball_behavior tmp in balls)
             {
-                ball_behavior ball = (ball_behavior)balls[i];
-                Destroy(ball.gameObject);
+                int i = balls.IndexOf(tmp);
+                balls[0] = tmp;
+                balls.RemoveAt(i);
+                break;
             }
         }
+        
     }
-
-    public void removeBall(ball_behavior ball)
+    public void reset()
     {
-        int index = balls.IndexOf(ball);
-        for(int i = 0;i<index;++i)
+        if(ball_number > 1)
         {
-            if(balls[i] == null)
+            foreach(ball_behavior tmp in balls)
             {
-                int tmp = i;
-                for(int j = i+1;j<=index;++j)
+                if(balls.IndexOf(tmp) != 0) 
                 {
-                    balls[tmp] = balls[j];
-                    ++tmp;
+                    balls.Remove(tmp);
+                    Destroy(tmp.gameObject);
                 }
             }
+            
         }
     }
 
