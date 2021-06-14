@@ -12,8 +12,12 @@ public class Player_Script : MonoBehaviour
     //---------------------------------------------------------------------------------
     public TextMeshPro displayed_text;
 
+
+    
     protected int score = 0;
     protected AudioSource ref_audioSource;
+
+    public float bound;
     protected Animator ref_animator;
 
     //---------------------------------------------------------------------------------
@@ -25,6 +29,8 @@ public class Player_Script : MonoBehaviour
         ref_audioSource = GetComponent<AudioSource>();
         ref_audioSource.volume = 0.3f;
         ref_animator = GetComponent<Animator>();
+
+        
     }
 
     // Update is called once per frame
@@ -34,16 +40,22 @@ public class Player_Script : MonoBehaviour
         //Manage movement speed and animations
         float newSpeed = 0;
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow) && gameObject.transform.position.x > -bound)
         {
             newSpeed = -10f;
             ref_animator.SetBool("isForwards", false);
         }
-        else if ( Input.GetKey(KeyCode.RightArrow) )
+        else if ( Input.GetKey(KeyCode.RightArrow) && gameObject.transform.position.x < bound)
         {
             newSpeed = 10f;
             ref_animator.SetBool("isForwards", true);
         }
+
+        if(gameObject.transform.position.x > 9.5f || gameObject.transform.position.x < -9.5f){
+            gameObject.transform.position = new Vector3(-gameObject.transform.position.x,gameObject.transform.position.y,gameObject.transform.position.z);
+        }
+
+        
         
         //Inform animator : Are we moving?
         ref_animator.SetBool("isMoving", newSpeed != 0);
@@ -84,6 +96,10 @@ public class Player_Script : MonoBehaviour
             yield return null;
         }
         
+    }
+
+    public void EnlargeBorders(){
+        bound = 10f;
     }
 
 }

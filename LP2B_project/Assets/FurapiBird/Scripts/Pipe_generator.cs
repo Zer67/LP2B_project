@@ -10,8 +10,6 @@ public class Pipe_generator : MonoBehaviour
     public background_script bg;
     private float timer = 0;
 
-    private float timer_coroutine = 0;
-
     private const float max_volume_music = 0.15f;
 
     private float timerSpeed = 0;
