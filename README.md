@@ -26,7 +26,7 @@ We added several features in our project :
   - Catch
   - Slow
   - Disruption (not functional)
- To activate any of those powerups, press the space key.
+ - To activate any of those powerups, press the space key.
 
  For more details, please visit the following website : https://strategywiki.org/wiki/Arkanoid/Getting_Started
 
