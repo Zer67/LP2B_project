@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class bullet_behavior : MonoBehaviour
 {
-    private paddle_behavior paddle;
+    /* References */
+    private game_manager game;
     
     // Start is called before the first frame update
     void Start()
     {
-        paddle = FindObjectOfType<paddle_behavior>();
+        game = FindObjectOfType<game_manager>();
     }
+
+    /**********************************************************************************/
 
     // Update is called once per frame
     void Update()
@@ -18,10 +21,12 @@ public class bullet_behavior : MonoBehaviour
 
     }
 
+    /**********************************************************************************/
+    
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.name.Contains("Brick") || other.gameObject.name.Contains("Wall"))
         {
-            paddle.updateScore(50);
+            game.updateScore(50);
             Destroy(gameObject);
         }
     }

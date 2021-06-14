@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class bullet_spawner : MonoBehaviour
 {
+    /* References */
     private bullet_behavior bullet_prefab;
 
+    /* Constants */
     private const float BULLET_SPEED = 7.0f;
+
     // Start is called before the first frame update
     void Start()
     {
         bullet_prefab = Resources.Load<bullet_behavior>("Prefabs/Bullet");
     }
+
+    /**********************************************************************************/
 
     // Update is called once per frame
     void Update()
@@ -19,6 +24,9 @@ public class bullet_spawner : MonoBehaviour
         
     }
 
+    /**********************************************************************************/
+
+    //Spawning a bullet at a given position
     public void spawnBullets(Vector3 position)
     {
         bullet_behavior spawnedBullet = Instantiate(bullet_prefab,position, Quaternion.identity) as bullet_behavior;

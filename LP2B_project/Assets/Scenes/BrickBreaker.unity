@@ -563,6 +563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db8e464745cdbb4e9d0ee7c5e53ffcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score_displayer: {fileID: 2028633239}
 --- !u!4 &735533511
 Transform:
   m_ObjectHideFlags: 0
@@ -819,7 +820,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 11
   ball_speed: 8.5
-  score_displayer: {fileID: 2028633239}
   sounds:
   - {fileID: 8300000, guid: d8829771a501ac34caa2078c83d2461e, type: 3}
 --- !u!50 &977998918

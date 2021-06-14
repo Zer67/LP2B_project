@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class powerups_behavior : MonoBehaviour
 {
+    /* References */
     private ball_behavior ball;
-
     private paddle_behavior paddle;
-
     private ball_spawner spawner_script;
-
     private powerups_spawner powerup;
+    private game_manager game;
 
     // Start is called before the first frame update
     void Start()
     {
+        game = FindObjectOfType<game_manager>();
         powerup = FindObjectOfType<powerups_spawner>();
         spawner_script = FindObjectOfType<ball_spawner>();
         paddle = FindObjectOfType<paddle_behavior>();
@@ -22,20 +22,21 @@ public class powerups_behavior : MonoBehaviour
         ball = FindObjectOfType<ball_behavior>();
     }
 
+    /**********************************************************************************/
+
     // Update is called once per frame
     void Update()
     {
         if(transform.position.y < -10){
             Destroy(gameObject);
         }
-
-        
     }
+
+    /**********************************************************************************/
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.name == "Paddle"){
-            paddle_behavior paddle = other.gameObject.GetComponent<paddle_behavior>();
-            if(gameObject.name == "doge_coin") paddle.updateScore(100);
+            if(gameObject.name == "doge_coin") game.updateScore(100);
             else
             {
                 ball = FindObjectOfType<ball_behavior>();
@@ -45,9 +46,9 @@ public class powerups_behavior : MonoBehaviour
                     case "Catch":
                         powerup.setSticky(true);
                     break;
-                    case "Disruption":
+                    /*case "Disruption":
                         spawner_script.spawnBalls(ball.transform.position,2);
-                    break;
+                    break;*/
                     case "Enlarge":
                         other.gameObject.transform.localScale += new Vector3(0.2f,-0.2f,0);
                     break;

@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class brick_behavior : MonoBehaviour
 {
-    private int lives = 1;
-    
-    private bool indestructible;
-
+    /* References */
     private ball_spawner balls;
-
     private powerups_spawner powerup;
-
     private brickCreation_script brick_spawner;
-
     private paddle_behavior paddle;
+
+    /* Variables */
+    private int lives = 1; //Defining the "solidity" of a brick
+    private bool indestructible = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,17 +23,20 @@ public class brick_behavior : MonoBehaviour
         balls = FindObjectOfType<ball_spawner>();
     }
 
+    /**********************************************************************************/
+
     // Update is called once per frame
     void Update()
     {
         gameObject.name = "Brick";
     }
 
+    /**********************************************************************************/
+
     private void OnCollisionEnter2D(Collision2D other) 
     {
         if(other.gameObject.name.Contains("Ball"))
         {
-            
             if(!indestructible) --lives;
             if(lives == 0) Destroy(gameObject);
             if(!indestructible && lives == 0)
@@ -51,6 +52,8 @@ public class brick_behavior : MonoBehaviour
         
     }
 
+    /**********************************************************************************/
+
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.name.Contains("Bullet"))
         {
@@ -63,12 +66,19 @@ public class brick_behavior : MonoBehaviour
         }
     }
 
+    /**********************************************************************************/
 
     public int getLives(){return this.lives;}
 
+    /**********************************************************************************/
+
     public void setLives(int l){this.lives = l;}
 
+    /**********************************************************************************/
+
     public void setIndestructible(bool i){this.indestructible = i;}
+
+    /**********************************************************************************/
 
     public bool isIndestructible(){return this.indestructible;}
 

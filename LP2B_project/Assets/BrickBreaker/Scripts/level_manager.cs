@@ -5,11 +5,13 @@ using TMPro;
 
 public class level_manager : MonoBehaviour
 {
+    /* References */
     public brickCreation_script spawner;
-
     public TextMeshPro round_text;
 
+    /* Constants */
     const float FADE_DURATION = 5.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,12 +19,17 @@ public class level_manager : MonoBehaviour
         else round_text.gameObject.SetActive(false);
     }
 
+    /**********************************************************************************/
+
     // Update is called once per frame
     void Update()
     {
         
     }
 
+    /**********************************************************************************/
+
+    //Loading manually generated levels
     public IEnumerator LoadFirstLevel()
     {
         spawner.generateFirstLevel();
@@ -36,6 +43,8 @@ public class level_manager : MonoBehaviour
         }
             
     }
+
+    /**********************************************************************************/
 
     public IEnumerator LoadSecondLevel()
     {
@@ -51,6 +60,8 @@ public class level_manager : MonoBehaviour
         }
             
     }
+
+    /**********************************************************************************/
 
     public IEnumerator LoadThirdLevel()
     {

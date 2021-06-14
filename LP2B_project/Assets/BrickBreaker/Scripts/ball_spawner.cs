@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ball_spawner : MonoBehaviour
 {
+    /* References */
     private ball_behavior ball_prefab;
 
+    /* Variables */
     private List<ball_behavior> balls = new List<ball_behavior>(3);
     private int ball_number = 1;
 
@@ -22,6 +24,22 @@ public class ball_spawner : MonoBehaviour
         
     }
 
+    public void decreaseBallNumber()
+    {
+        --this.ball_number;
+    }
+
+    /**********************************************************************************/
+
+    public int getBallNumber(){return this.ball_number;}
+
+
+    /**
+      *The following methods are for managing the multiple balls spawning.
+      *Unfortunately they have been causing some issues, so 
+      *we decided to not use them.
+      **/
+
     public void spawnBalls(Vector3 position,int count)
     {
         for(int i = 0;i<count;++i)
@@ -32,19 +50,14 @@ public class ball_spawner : MonoBehaviour
             ballBody.isKinematic = false;
             ballBody.freezeRotation = true;
             ballBody.velocity = (new Vector2(0,ball_prefab.getBallSpeed())).normalized * ball_prefab.getBallSpeed();
-            balls.Add(spawnedBall);
+            balls.Add(spawnedBall); //Keeping track of the current spawed balls in a list
             ball_number++;
         }
     }
 
-    public void decreaseBallNumber()
-    {
-        --this.ball_number;
-    }
+    /**********************************************************************************/
 
-    public int getBallNumber(){return this.ball_number;}
-
-    public void removeBall(ball_behavior b)
+    public void removeBall(ball_behavior b) 
     {
         int index = balls.IndexOf(b);
         balls.Remove(b);
@@ -62,6 +75,9 @@ public class ball_spawner : MonoBehaviour
         }
         
     }
+
+    /**********************************************************************************/
+
     public void reset()
     {
         if(ball_number > 1)
@@ -78,5 +94,4 @@ public class ball_spawner : MonoBehaviour
         }
     }
 
-     
 }
