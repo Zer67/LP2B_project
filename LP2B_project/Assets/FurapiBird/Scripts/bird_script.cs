@@ -34,6 +34,7 @@ public class bird_script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //We add an audio source to the bird.
         bird_source = gameObject.AddComponent<AudioSource>();
         bird_source.clip = bird_sound;
         bird_source.volume = 0f;
@@ -42,6 +43,7 @@ public class bird_script : MonoBehaviour
 
         parent = gameObject.transform.parent.gameObject;
         ref_animator = gameObject.GetComponent<Animator>();
+        // The rotation are fozen so when it collides with a pipe, it won't turn in every directions.
         gameObject.GetComponent<Rigidbody2D>().freezeRotation = true;
         StartCoroutine(fadeOut());
     }
@@ -64,11 +66,13 @@ public class bird_script : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        // This lines are there to make the bird face the direction where he goes. He's static so we add a little horizontal vector to make give the impression of a movement.
         Vector3 dir = gameObject.GetComponent<Rigidbody2D>().velocity + new Vector2(5,0);
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
+    //WHen the bird enter in collision with a pipe. We add an horizontal vector, so the bird is launched away and we start a small "bullet time".
     private void OnCollisionEnter2D(Collision2D other) {
         gameObject.GetComponent<Collider2D>().enabled = false;
         gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(8f,0);
@@ -78,6 +82,7 @@ public class bird_script : MonoBehaviour
         control_enabled = false;
     }
 
+    // A small fade out at the beginning of the game. We have also a fade in of bird noise to replace the music until it starts.
     IEnumerator fadeOut(){
         bird_source.Play();
         Time.timeScale = 0;
@@ -96,6 +101,7 @@ public class bird_script : MonoBehaviour
         yield return null;
     }
 
+    // The game will start and we put a timer on th screen to indicate to the player that he will soon have the control.
     IEnumerator StartGame(){
         timer = 0;
         int count = 3;
@@ -119,6 +125,7 @@ public class bird_script : MonoBehaviour
         yield return null;
     }
 
+    // The die effect with the bullet time.
     IEnumerator DieEffect(){
         timer = 0;
         Time.timeScale = 0.6f;

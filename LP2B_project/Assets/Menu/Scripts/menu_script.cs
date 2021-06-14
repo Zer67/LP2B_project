@@ -43,6 +43,7 @@ public class menu_script : MonoBehaviour
         }
     }
 
+    // A small coroutine to load a certain scene.
     IEnumerator LoadScene(string scene_name){
         selection_sound.Play();
 
@@ -57,14 +58,18 @@ public class menu_script : MonoBehaviour
         }
     }
 
+    // Load the scene Apple Catcher.
     public void setACscene(){
         StartCoroutine(LoadScene("AppleCatcher"));
     }
 
+
+    // Load the scene FurapiBird
     public void setFBscene(){
         StartCoroutine(LoadScene("FurapiBird"));
     }
 
+    // Load the scene BBMenu, which corresponds to the brick breaker.
     public void setBBscene(){
         StartCoroutine(LoadScene("BBMenu"));
     }

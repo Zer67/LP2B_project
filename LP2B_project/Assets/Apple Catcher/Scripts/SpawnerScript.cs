@@ -72,11 +72,13 @@ public class SpawnerScript : MonoBehaviour
 
     }
 
+    /* This coroutine is there to stop everything on the scene when the player go outside of the screen */
     public void StopAnimations(){
         stop = true;
         ref_audioSource.Stop();
     }
 
+    /* This coroutine reload the animation when the player went to the "bad apple scene" */
     public void restartAnimation(){
         ref_audioSource.clip = ref_audioClip[1];
         ref_audioSource.Play();
@@ -85,23 +87,26 @@ public class SpawnerScript : MonoBehaviour
         StartCoroutine(startVideoClip());
     }
 
+    /* The coroutine start the video clip of bad apple at the end of the last coroutine */
     IEnumerator startVideoClip(){
         float timerBadApple = 0f;
         float total_timer = 0f;
-        while(timerBadApple <timerEndBadApple){
+        // There is, at first a timer of 10 seconds
+        while(timerBadApple <timerEndBadApple){ 
             timerBadApple += Time.deltaTime;
             yield return null;
         }
         total_timer = timerBadApple;
 
         fader_renderer.gameObject.transform.position = new Vector3(0,0,0.0001f);
-
+        // Then we add a timer for a smal fade in of the background
         while(current_alpha < 1f){
             current_alpha += Time.deltaTime / 2;
             fader_renderer.color = new Color(1,1,1,current_alpha);
             yield return null;
         }
         total_timer += current_alpha*2;
+        // Then we play the video and synchronize it with the sound.
         fader_renderer.gameObject.GetComponent<VideoPlayer>().Play();
         fader_renderer.gameObject.GetComponent<VideoPlayer>().time = total_timer;
 

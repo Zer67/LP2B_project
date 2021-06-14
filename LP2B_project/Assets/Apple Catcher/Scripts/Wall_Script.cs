@@ -26,6 +26,7 @@ public class Wall_Script : MonoBehaviour
         
     }
 
+    /* If the catchboy enter in the invisible wall, it produce a sound of broken glass and reduce the durability of the wall */
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.name == "CatchBoy"){
             if(wallRigidity > 1){

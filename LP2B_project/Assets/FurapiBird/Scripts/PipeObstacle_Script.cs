@@ -42,10 +42,12 @@ public class PipeObstacle_Script : MonoBehaviour
         
     }
 
+    // When the player exit the space between 2 pipes, they get 1 point.
     private void OnTriggerExit2D(Collider2D other) {
         pscript.updateScore();
     }
 
+    // When the player hit a pipe, it will start the death animation for the player.
     private void OnCollisionEnter2D(Collision2D other) {
         gameObject.transform.parent.gameObject.GetComponent<Pipe_generator>().playDeathSound();
     }

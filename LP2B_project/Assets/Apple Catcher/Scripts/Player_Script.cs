@@ -52,7 +52,7 @@ public class Player_Script : MonoBehaviour
             newSpeed = 10f;
             ref_animator.SetBool("isForwards", true);
         }
-
+        // We teleport to the opposite side the player if he manages to go through the invisible wall. It simulates another screen.
         if(gameObject.transform.position.x > 9.5f || gameObject.transform.position.x < -9.5f){
             gameObject.transform.position = new Vector3(-gameObject.transform.position.x,gameObject.transform.position.y,gameObject.transform.position.z);
             displayed_text.gameObject.SetActive(false);
@@ -93,6 +93,7 @@ public class Player_Script : MonoBehaviour
         ref_audioSource.Play();
     }
 
+    // This coroutine load the scen to the menu when escape is pressed.
     IEnumerator returnToMenu(){
 
         AsyncOperation asyncload = SceneManager.LoadSceneAsync("Menu");
@@ -103,20 +104,23 @@ public class Player_Script : MonoBehaviour
         
     }
 
+    // It enlarge the border of the player to go out of the screen.
     public void EnlargeBorders(){
         bound = 10f;
     }
 
-
+    // This coroutine start the bad apple mod.
     IEnumerator badApple(){
         float timer = 0f;
+        // We put a small blank which will be voluntarily awkward.
         while(timer < timerWait){
             timer += Time.deltaTime;
             yield return null;
         }
+        // We start again the game.
         displayed_text.gameObject.SetActive(true);
         ref_spawner.restartAnimation();
-        bound = 8.8f;
+        bound = 8f;
 
         yield return null;
     }

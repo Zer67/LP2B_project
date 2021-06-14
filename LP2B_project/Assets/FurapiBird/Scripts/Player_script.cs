@@ -26,6 +26,7 @@ public class Player_script : MonoBehaviour
         
     }
 
+    // Just an update of the score called in the PipeObstacle_script.
     public void updateScore() {
         score++;
         text.SetText("Score : "+score);

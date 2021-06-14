@@ -26,6 +26,7 @@ public class AppleScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // This section to make a smooth multicolor apple in the bad apple mod.
         if(multicolor){
             gameObject.GetComponent<SpriteRenderer>().color = new Color32(red,blue,green,255);
             red+=(byte)redToAdd;

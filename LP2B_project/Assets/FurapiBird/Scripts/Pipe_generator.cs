@@ -87,6 +87,7 @@ public class Pipe_generator : MonoBehaviour
 
     }
 
+    // We play the death sound and we stop every pipe when the bird hit a pipe.
     public void playDeathSound(){
         isDead = true;
         foreach(GameObject pipe in pipes){
@@ -95,6 +96,7 @@ public class Pipe_generator : MonoBehaviour
         source_sound.Play();
     }
 
+    // We play the death jingle and we stop everything on the screen when the player go out of the screen.
     public void playDeathJingle(){
         bg.isStopped = true;
         foreach(GameObject pipe in pipes){
@@ -108,6 +110,7 @@ public class Pipe_generator : MonoBehaviour
         StartCoroutine(returnToMenu());
     }
 
+    // The coroutine to return to menu when the player died & when the player pressed escape. 
     IEnumerator returnToMenu(){
         while(source_music.isPlaying && isDead){
             yield return null;
@@ -121,10 +124,13 @@ public class Pipe_generator : MonoBehaviour
         
     }
 
+    // A public method to start the coroutine PlayMusicCor().
     public void PlayMusic(){
         StartCoroutine(PlayMusicCor());
     }
 
+
+    // This coroutine is there to make a little fade in of  music.
     IEnumerator PlayMusicCor(){
         source_music.Play();
         while(source_music.volume < max_volume_music){
