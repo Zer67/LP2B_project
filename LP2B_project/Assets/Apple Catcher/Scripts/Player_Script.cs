@@ -12,12 +12,14 @@ public class Player_Script : MonoBehaviour
     //---------------------------------------------------------------------------------
     public TextMeshPro displayed_text;
 
-
+    public SpawnerScript ref_spawner;
     
     protected int score = 0;
     protected AudioSource ref_audioSource;
 
     public float bound;
+
+    protected const float timerWait = 5f;
     protected Animator ref_animator;
 
     //---------------------------------------------------------------------------------
@@ -53,6 +55,9 @@ public class Player_Script : MonoBehaviour
 
         if(gameObject.transform.position.x > 9.5f || gameObject.transform.position.x < -9.5f){
             gameObject.transform.position = new Vector3(-gameObject.transform.position.x,gameObject.transform.position.y,gameObject.transform.position.z);
+            displayed_text.gameObject.SetActive(false);
+            ref_spawner.StopAnimations();
+            StartCoroutine(badApple());
         }
 
         
@@ -102,4 +107,17 @@ public class Player_Script : MonoBehaviour
         bound = 10f;
     }
 
+
+    IEnumerator badApple(){
+        float timer = 0f;
+        while(timer < timerWait){
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        displayed_text.gameObject.SetActive(true);
+        ref_spawner.restartAnimation();
+        bound = 8.8f;
+
+        yield return null;
+    }
 }

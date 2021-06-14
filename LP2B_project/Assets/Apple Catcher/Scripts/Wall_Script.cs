@@ -27,7 +27,6 @@ public class Wall_Script : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("This object is : "+other.gameObject.name);
         if(other.gameObject.name == "CatchBoy"){
             if(wallRigidity > 1){
                 wallRigidity--;
